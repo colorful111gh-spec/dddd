@@ -1,0 +1,2342 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>FRESH ECO GROVE - 30일 무지개나무 챌린지</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-outside: #cfc9b8;
+      --bg-oat: #eae6da;
+      --bg-cream: #f6f4ec;
+      --butter-yellow: #f2e376;
+      --vivid-yellow: #f5df4d;
+      --terracotta: #d96846;
+      --taupe: #9c8f7d;
+      --olive-green: #6b7c45;
+      --charcoal: #262421;
+      --text-muted: #6e6a63;
+      --white: #ffffff;
+      --border-line: 1px solid #262421;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-outside);
+      color: var(--charcoal);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* 휴대폰 비율 모바일 프레임 (스크롤 없이 한 화면 고정) */
+    .mobile-app {
+      width: 100%;
+      max-width: 420px;
+      height: 100vh;
+      max-height: 860px;
+      background: var(--bg-oat);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid var(--charcoal);
+      box-shadow: 0 18px 45px rgba(38, 36, 33, 0.25);
+    }
+
+    @media (min-width: 450px) {
+      .mobile-app {
+        height: 94vh;
+        border-radius: 28px;
+        border: 4px solid var(--charcoal);
+      }
+    }
+
+    /* 공통 인라인 커스텀 아이콘 래퍼 */
+    .ui-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+
+    .ui-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* 상단 헤더 */
+    header {
+      background: var(--butter-yellow);
+      color: var(--charcoal);
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: var(--border-line);
+      flex-shrink: 0;
+    }
+
+    header h1 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dday-badge {
+      background: var(--charcoal);
+      color: var(--butter-yellow);
+      padding: 3px 7px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .coin-badge {
+      background: var(--bg-cream);
+      border: var(--border-line);
+      padding: 3px 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .logout-btn {
+      background: transparent;
+      border: var(--border-line);
+      color: var(--charcoal);
+      padding: 3px 7px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* 화면 컨테이너 */
+    .screen {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      padding: 10px 12px;
+      gap: 8px;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    /* 로그인 & 회원가입 화면 */
+    .auth-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .auth-hero {
+      background: var(--taupe);
+      color: var(--white);
+      border: var(--border-line);
+      padding: 28px 16px;
+      text-align: center;
+    }
+
+    .auth-hero .sub-label {
+      display: inline-block;
+      background: var(--butter-yellow);
+      color: var(--charcoal);
+      border: var(--border-line);
+      padding: 3px 10px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+
+    .auth-hero h2.challenge-headline {
+      font-family: 'Hahmlet', 'Nanum Myeongjo', serif;
+      font-size: 1.32rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.45;
+      word-break: keep-all;
+      text-shadow: 0 2px 0 rgba(38, 36, 33, 0.22);
+    }
+
+    .auth-card {
+      background: var(--bg-cream);
+      border: var(--border-line);
+      padding: 18px;
+    }
+
+    .auth-card h3 {
+      font-size: 0.98rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      border-bottom: var(--border-line);
+      padding-bottom: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px 12px;
+      border: var(--border-line);
+      background: var(--white);
+      font-size: 0.88rem;
+      color: var(--charcoal);
+      outline: none;
+      user-select: text;
+    }
+
+    .btn-block {
+      width: 100%;
+      padding: 12px;
+      border: var(--border-line);
+      background: var(--butter-yellow);
+      color: var(--charcoal);
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 4px;
+    }
+
+    .btn-block:active {
+      background: var(--vivid-yellow);
+    }
+
+    .switch-auth {
+      margin-top: 14px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .switch-auth button {
+      background: none;
+      border: none;
+      color: var(--charcoal);
+      font-weight: 700;
+      text-decoration: underline;
+      margin-left: 4px;
+      cursor: pointer;
+    }
+
+    /* 공통 섹션 박스 */
+    .section-box {
+      background: var(--bg-cream);
+      border: var(--border-line);
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: var(--border-line);
+      padding-bottom: 6px;
+      margin-bottom: 8px;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .date-tag {
+      background: var(--vivid-yellow);
+      border: var(--border-line);
+      padding: 2px 7px;
+      font-size: 0.68rem;
+      font-weight: 700;
+    }
+
+    /* 달력 스타일 */
+    .calendar-box {
+      flex-shrink: 0;
+    }
+
+    .calendar-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .calendar-nav strong {
+      font-size: 0.86rem;
+    }
+
+    .calendar-nav button {
+      background: var(--white);
+      border: var(--border-line);
+      padding: 3px 9px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 3px;
+      text-align: center;
+    }
+
+    .day-name {
+      font-size: 0.64rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      padding-bottom: 2px;
+    }
+
+    .calendar-day {
+      height: 34px;
+      border: 1px solid transparent;
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      cursor: pointer;
+      position: relative;
+      line-height: 1;
+      gap: 1px;
+    }
+
+    .calendar-day:hover {
+      border-color: var(--charcoal);
+    }
+
+    .calendar-day.selected {
+      background: var(--butter-yellow);
+      border: var(--border-line);
+      font-weight: 700;
+    }
+
+    .calendar-day.today {
+      text-decoration: underline;
+      font-weight: 700;
+    }
+
+    .status-dot {
+      width: 13px;
+      height: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .status-dot svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* 체크리스트 섹션 */
+    .checklist-box {
+      flex: 1;
+      min-height: 0;
+    }
+
+    .progress-wrap {
+      width: 100%;
+      height: 7px;
+      background: var(--white);
+      border: var(--border-line);
+      margin-bottom: 8px;
+      flex-shrink: 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--olive-green);
+      width: 0%;
+      transition: width 0.25s;
+    }
+
+    .checklist-ul {
+      list-style: none;
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 8px;
+      padding-right: 2px;
+    }
+
+    .checklist-ul::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .checklist-ul::-webkit-scrollbar-thumb {
+      background: var(--taupe);
+    }
+
+    .checklist-li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 10px;
+      background: var(--white);
+      border: var(--border-line);
+      margin-bottom: 5px;
+    }
+
+    .checklist-li:last-child {
+      margin-bottom: 0;
+    }
+
+    .checklist-li.completed {
+      background: #e9e6dc;
+    }
+
+    .checklist-li.completed span {
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+
+    .checklist-li label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    .checklist-li input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      accent-color: var(--charcoal);
+      cursor: pointer;
+    }
+
+    .del-btn {
+      background: none;
+      border: none;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .add-form {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .add-form input {
+      flex: 1;
+      padding: 7px 10px;
+      border: var(--border-line);
+      background: var(--white);
+      font-size: 0.78rem;
+      outline: none;
+      user-select: text;
+    }
+
+    .add-form button {
+      background: var(--charcoal);
+      color: var(--white);
+      border: var(--border-line);
+      padding: 0 14px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* 정원 & 상점 화면 (4x4 그리드 맞춤형 레이아웃) */
+    .inventory-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      margin-bottom: 6px;
+      flex-shrink: 0;
+    }
+
+    .inv-item {
+      padding: 5px 6px;
+      border: var(--border-line);
+      background: var(--white);
+      cursor: pointer;
+      font-size: 0.7rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .inv-item.active {
+      background: var(--butter-yellow);
+      font-weight: 700;
+    }
+
+    .inv-svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    /* 4x4 정원 그리드 */
+    .garden-grid-wrap {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .garden-grid {
+      width: 100%;
+      height: 100%;
+      max-height: 340px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 5px;
+      background: #b8a68e;
+      padding: 7px;
+      border: var(--border-line);
+    }
+
+    .garden-plot {
+      background: var(--bg-cream);
+      border: var(--border-line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .garden-plot:hover {
+      background: #fffef5;
+    }
+
+    .garden-plot.selected-merge {
+      background: var(--vivid-yellow);
+      border: 2px solid var(--terracotta);
+    }
+
+    .garden-plot.rainbow-cell {
+      background: linear-gradient(135deg, #fff9c4, #f8bbd0, #b3e5fc);
+    }
+
+    .plot-illust {
+      width: 78%;
+      height: 78%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .plot-illust svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .cell-timer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(38, 36, 33, 0.82);
+      color: var(--white);
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 1px 0;
+    }
+
+    .cell-penalty-badge {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background: var(--terracotta);
+      color: var(--white);
+      font-size: 0.54rem;
+      font-weight: 700;
+      padding: 0 4px;
+      border: 1px solid var(--charcoal);
+    }
+
+    /* 텃밭 하단 규칙표 버튼 */
+    .rule-btn {
+      width: 100%;
+      margin-top: 6px;
+      padding: 7px;
+      background: var(--butter-yellow);
+      color: var(--charcoal);
+      border: var(--border-line);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .rule-btn:active {
+      background: var(--vivid-yellow);
+    }
+
+    /* 2종 씨앗 상점 */
+    .shop-box {
+      flex-shrink: 0;
+    }
+
+    .shop-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .shop-card {
+      background: var(--white);
+      border: var(--border-line);
+      padding: 7px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .shop-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .shop-thumb {
+      width: 34px;
+      height: 34px;
+      background: var(--bg-oat);
+      border: var(--border-line);
+      padding: 3px;
+      flex-shrink: 0;
+    }
+
+    .shop-thumb svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .shop-name {
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .shop-price {
+      font-size: 0.66rem;
+      color: var(--text-muted);
+    }
+
+    .shop-buy-btn {
+      background: var(--vivid-yellow);
+      border: var(--border-line);
+      padding: 5px 10px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .shop-buy-btn:active {
+      background: var(--terracotta);
+      color: var(--white);
+    }
+
+    /* 무지개나무 팝아웃(돌출) 애니메이션 오버레이 */
+    .popout-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(38, 36, 33, 0.85);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 200;
+      overflow: hidden;
+    }
+
+    .popout-overlay.active {
+      display: flex;
+    }
+
+    .popout-tree-burst {
+      width: 280px;
+      height: 280px;
+      filter: drop-shadow(0 25px 35px rgba(0, 0, 0, 0.55));
+      animation: treePopOut 1.5s cubic-bezier(0.22, 1.35, 0.36, 1) forwards;
+    }
+
+    @keyframes treePopOut {
+      0% {
+        transform: scale(0.1) translateY(80px) rotate(-8deg);
+        opacity: 0;
+      }
+      55% {
+        transform: scale(1.45) translateY(-15px) rotate(4deg);
+        opacity: 1;
+      }
+      80% {
+        transform: scale(1.15) translateY(5px) rotate(-2deg);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1.28) translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+    }
+
+    /* 챌린지 성공(종료) 전용 화면 */
+    .victory-card {
+      flex: 1;
+      background: var(--bg-cream);
+      border: 2px solid var(--charcoal);
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      text-align: center;
+      position: relative;
+      overflow: visible;
+    }
+
+    .victory-badge {
+      background: var(--butter-yellow);
+      border: var(--border-line);
+      padding: 4px 12px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+    }
+
+    .victory-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--charcoal);
+      margin-top: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .victory-sub {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .victory-stage {
+      width: 190px;
+      height: 190px;
+      background: radial-gradient(circle, #fffde7 0%, #f2e376 70%, #eae6da 100%);
+      border: 2px solid var(--charcoal);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin: 14px 0;
+      box-shadow: 0 12px 28px rgba(38, 36, 33, 0.18);
+    }
+
+    .victory-tree-pop {
+      width: 245px;
+      height: 245px;
+      position: absolute;
+      top: -32px;
+      left: 50%;
+      transform: translateX(-50%);
+      filter: drop-shadow(0 16px 18px rgba(38, 36, 33, 0.32));
+      animation: floatTree 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes floatTree {
+      0%, 100% { transform: translateX(-50%) translateY(0) scale(1.05); }
+      50% { transform: translateX(-50%) translateY(-8px) scale(1.09); }
+    }
+
+    .eco-message-box {
+      width: 100%;
+      background: var(--white);
+      border: var(--border-line);
+      padding: 12px;
+      text-align: center;
+    }
+
+    .eco-message-title {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--olive-green);
+      margin-bottom: 5px;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .eco-message-text {
+      font-size: 0.75rem;
+      line-height: 1.5;
+      color: var(--charcoal);
+      word-break: keep-all;
+    }
+
+    .victory-actions {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .btn-save-img {
+      width: 100%;
+      padding: 11px;
+      background: var(--charcoal);
+      color: var(--butter-yellow);
+      border: var(--border-line);
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+    }
+
+    .btn-save-img:active {
+      background: var(--terracotta);
+      color: var(--white);
+    }
+
+    .btn-return-garden {
+      width: 100%;
+      padding: 8px;
+      background: var(--white);
+      color: var(--charcoal);
+      border: var(--border-line);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    /* 하단 고정 탭 바 (DAILY CHECK / GARDEN & SHOP) */
+    .bottom-nav {
+      width: 100%;
+      height: 46px;
+      background: var(--bg-cream);
+      border-top: var(--border-line);
+      display: none;
+      grid-template-columns: repeat(2, 1fr);
+      flex-shrink: 0;
+    }
+
+    .bottom-nav button {
+      background: transparent;
+      border: none;
+      border-right: var(--border-line);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--charcoal);
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+
+    .bottom-nav button:last-child {
+      border-right: none;
+    }
+
+    .bottom-nav button.active {
+      background: var(--charcoal);
+      color: var(--bg-cream);
+    }
+
+    /* 규칙표 모달 (팝업창) */
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(38, 36, 33, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 14px;
+      z-index: 100;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-height: 90%;
+      background: var(--bg-cream);
+      border: 2px solid var(--charcoal);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .modal-header {
+      background: var(--butter-yellow);
+      border-bottom: var(--border-line);
+      padding: 9px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .modal-header h3 {
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .modal-close {
+      background: var(--white);
+      border: var(--border-line);
+      width: 24px;
+      height: 24px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      padding: 12px;
+      overflow-y: auto;
+    }
+
+    .rule-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.72rem;
+      background: var(--white);
+      border: var(--border-line);
+    }
+
+    .rule-table th,
+    .rule-table td {
+      border: var(--border-line);
+      padding: 8px 9px;
+      text-align: left;
+      line-height: 1.45;
+    }
+
+    .rule-table th {
+      background: var(--bg-oat);
+      width: 26%;
+      font-weight: 700;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .inline-svg-badge {
+      display: inline-flex;
+      width: 14px;
+      height: 14px;
+      vertical-align: -2px;
+      margin-right: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-app">
+    <!-- 상단 헤더 -->
+    <header>
+      <h1>Fresh Eco Grove</h1>
+      <div class="header-right" id="header-user-info" style="display: none;">
+        <div class="dday-badge" id="challenge-day-badge">DAY 1/30</div>
+        <div class="coin-badge">
+          <span class="ui-icon" id="header-coin-icon"></span>
+          <span id="coin-count">0</span> C
+        </div>
+        <button class="logout-btn" onclick="logout()">LOGOUT</button>
+      </div>
+    </header>
+
+    <!-- 1-A. 로그인 화면 -->
+    <div id="login-screen" class="screen active">
+      <div class="auth-wrap">
+        <div class="auth-hero">
+          <span class="sub-label">FRESH ECO GROVE PROJECT</span>
+          <h2 class="challenge-headline">30일 챌린지:<br>무지개 나무를 획득하시오</h2>
+        </div>
+
+        <div class="auth-card">
+          <h3>Sign In</h3>
+          <div class="form-group">
+            <label for="login-username">ID (아이디)</label>
+            <input type="text" id="login-username" placeholder="아이디를 입력하세요">
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password (비밀번호)</label>
+            <input type="password" id="login-password" placeholder="비밀번호를 입력하세요">
+          </div>
+          <button class="btn-block" onclick="login()">LOGIN</button>
+
+          <div class="switch-auth">
+            계정이 없으신가요?
+            <button onclick="showAuthScreen('signup')">회원가입 이동</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1-B. 회원가입 화면 -->
+    <div id="signup-screen" class="screen">
+      <div class="auth-wrap">
+        <div class="auth-hero" style="background: var(--olive-green);">
+          <span class="sub-label">NEW CHALLENGER</span>
+          <h2 class="challenge-headline">30일 챌린지:<br>무지개 나무를 획득하시오</h2>
+        </div>
+
+        <div class="auth-card">
+          <h3>Create Account</h3>
+          <div class="form-group">
+            <label for="signup-username">ID (사용할 아이디)</label>
+            <input type="text" id="signup-username" placeholder="아이디 입력">
+          </div>
+          <div class="form-group">
+            <label for="signup-password">Password (비밀번호)</label>
+            <input type="password" id="signup-password" placeholder="비밀번호 입력">
+          </div>
+          <div class="form-group">
+            <label for="signup-password-confirm">Confirm Password (비밀번호 확인)</label>
+            <input type="password" id="signup-password-confirm" placeholder="비밀번호 다시 입력">
+          </div>
+          <button class="btn-block" onclick="signup()">SIGN UP</button>
+
+          <div class="switch-auth">
+            이미 계정이 있으신가요?
+            <button onclick="showAuthScreen('login')">로그인 화면으로</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. 메인 화면 (달력 + 체크리스트) -->
+    <div id="home-screen" class="screen">
+      <div class="section-box calendar-box">
+        <div class="section-header">
+          <span class="section-title">ECO CALENDAR</span>
+        </div>
+        <div class="calendar-nav">
+          <button onclick="changeMonth(-1)">◀ PREV</button>
+          <strong id="calendar-month-title"></strong>
+          <button onclick="changeMonth(1)">NEXT ▶</button>
+        </div>
+        <div class="calendar-grid">
+          <div class="day-name">SUN</div>
+          <div class="day-name">MON</div>
+          <div class="day-name">TUE</div>
+          <div class="day-name">WED</div>
+          <div class="day-name">THU</div>
+          <div class="day-name">FRI</div>
+          <div class="day-name">SAT</div>
+        </div>
+        <div class="calendar-grid" id="calendar-body"></div>
+      </div>
+
+      <div class="section-box checklist-box">
+        <div class="section-header">
+          <span class="section-title">DAILY CHECKLIST</span>
+          <span class="date-tag" id="selected-date-display"></span>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-fill" id="checklist-progress"></div>
+        </div>
+        <ul class="checklist-ul" id="checklist-container"></ul>
+
+        <div class="add-form">
+          <input type="text" id="new-habit-input" placeholder="개인 보전 활동 추가">
+          <button onclick="addCustomHabit()">ADD</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. 정원 & 상점 화면 (4x4 정원 + 합성 모드 전용 합성 + 2종 씨앗 상점) -->
+    <div id="garden-screen" class="screen">
+      <div class="section-box" style="flex: 1; min-height: 0;">
+        <div class="section-header">
+          <span class="section-title">MY 4×4 BOTANICAL GARDEN</span>
+          <span class="date-tag" id="selected-crop-status">합성 모드 활성</span>
+        </div>
+
+        <!-- 씨앗 선택 / 합성 모드 바 -->
+        <div class="inventory-bar" id="inventory-bar"></div>
+
+        <!-- 4x4 정원 텃밭 -->
+        <div class="garden-grid-wrap">
+          <div class="garden-grid" id="garden-grid"></div>
+        </div>
+
+        <!-- 텃밭 아래 규칙표 버튼 -->
+        <button class="rule-btn" onclick="toggleRuleModal(true)">
+          <span class="ui-icon" id="btn-rule-icon"></span>
+          <span>규칙표 보기</span>
+        </button>
+      </div>
+
+      <!-- 2종 씨앗 상점 (장미 / 민들레) -->
+      <div class="section-box shop-box">
+        <div class="section-header">
+          <span class="section-title">SEED SHOP</span>
+        </div>
+        <div class="shop-grid" id="shop-grid"></div>
+      </div>
+    </div>
+
+    <!-- 4. 무지개 나무 획득 시 생성되는 챌린지 성공 화면 -->
+    <div id="victory-screen" class="screen">
+      <div class="victory-card">
+        <div>
+          <span class="victory-badge">30-DAY ECO CHALLENGE CLEAR</span>
+          <h2 class="victory-title" id="victory-user-title">챌린지 성공!</h2>
+          <p class="victory-sub" id="victory-date-sub"></p>
+        </div>
+
+        <!-- 화면 밖으로 튀어나온 듯 중앙에 크게 위치하는 무지개 나무 -->
+        <div class="victory-stage">
+          <div class="victory-tree-pop" id="victory-tree-holder"></div>
+        </div>
+
+        <!-- 환경 보전을 촉구하는 문구 -->
+        <div class="eco-message-box">
+          <div class="eco-message-title">
+            <span class="ui-icon" id="victory-earth-icon" style="width:18px;height:18px;"></span>
+            <span>지구를 지키는 작은 실천의 힘</span>
+          </div>
+          <p class="eco-message-text">
+            매일의 양치컵 사용과 작은 보전 행동이 모여 기적의 <strong>무지개 나무</strong>를 피워냈습니다.<br>
+            화면 속 정원을 넘어, 우리의 일상 속 실천이 지구의 내일을 바꿉니다. 오늘도 지구를 위한 초록빛 발걸음을 함께 이어가 주세요!
+          </p>
+        </div>
+      </div>
+
+      <div class="victory-actions">
+        <button class="btn-save-img" onclick="downloadVictoryImage()">
+          <span class="ui-icon" id="btn-camera-icon"></span>
+          <span>챌린지 성공 이미지 저장하기 (.PNG)</span>
+        </button>
+        <button class="btn-return-garden" onclick="openTab('garden')">
+          <span class="ui-icon" id="btn-home-icon"></span>
+          <span>정원 화면으로 돌아가기</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 무지개 나무 합성 순간 화면 밖으로 튀어나오는 연출 오버레이 -->
+    <div class="popout-overlay" id="popout-overlay">
+      <div class="popout-tree-burst" id="popout-tree-holder"></div>
+    </div>
+
+    <!-- 규칙표 모달창 -->
+    <div class="modal-overlay" id="rule-modal" onclick="if(event.target===this) toggleRuleModal(false)">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3>
+            <span class="ui-icon" id="modal-rule-icon"></span>
+            <span>30일 무지개나무 챌린지 규칙표</span>
+          </h3>
+          <button class="modal-close" onclick="toggleRuleModal(false)">✕</button>
+        </div>
+        <div class="modal-body">
+          <table class="rule-table">
+            <tbody>
+              <tr>
+                <th>챌린지 목표</th>
+                <td><strong>30일</strong> 동안 매일 환경 보전 체크리스트를 실천하고 4×4 정원에서 작물을 합성해 최종 목표인 <strong>무지개나무</strong>를 획득하면 챌린지가 성공으로 종료됩니다.</td>
+              </tr>
+              <tr>
+                <th>코인 획득</th>
+                <td>
+                  • 하루 체크리스트 <strong>100% 완수 시 +10 코인(C)</strong> 지급<br>
+                  • 신규 계정 생성 시 기본 <strong>10 코인(C)</strong> 지급
+                </td>
+              </tr>
+              <tr>
+                <th>기본 작물 2종</th>
+                <td id="rule-crops-cell"></td>
+              </tr>
+              <tr>
+                <th>작물 합성 로드맵</th>
+                <td>
+                  <strong>[합성 모드]</strong>를 선택한 상태에서 다 자란 같은 작물 2개를 차례로 터치하면 상위 작물로 합쳐집니다.<br>
+                  • <strong>민들레</strong> ➔ 노란색 튤립 ➔ 해바라기 ➔ 황금 사과 ➔ <strong>황금나무</strong><br>
+                  • <strong>장미</strong> ➔ 붉은색 튤립 ➔ 진달래 ➔ 불꽃 사과 ➔ <strong>불꽃나무</strong><br>
+                  • <strong>황금나무 + 불꽃나무 ➔ 무지개나무</strong>
+                </td>
+              </tr>
+              <tr>
+                <th>미완료 페널티</th>
+                <td>체크리스트를 완성하지 못한 날 <strong>1개당</strong> 정원에서 자라는 작물 1개의 성장 시간에 <strong>+12시간</strong>이 부과됩니다.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 하단 고정 내비게이션 바 -->
+    <nav class="bottom-nav" id="bottom-nav">
+      <button class="active" id="nav-home" onclick="openTab('home')">DAILY CHECK</button>
+      <button id="nav-garden" onclick="openTab('garden')">GARDEN & SHOP</button>
+    </nav>
+  </div>
+
+  <script>
+    // 11종 전체 작물 메타데이터 및 합성 로드맵 정의
+    const CROPS_INFO = {
+      dandelion: {
+        name: '민들레',
+        tier: 1,
+        baseHours: 24,
+        price: 10,
+        nextMerge: 'yellow_tulip'
+      },
+      yellow_tulip: {
+        name: '노란색 튤립',
+        tier: 2,
+        nextMerge: 'sunflower'
+      },
+      sunflower: {
+        name: '해바라기',
+        tier: 3,
+        nextMerge: 'golden_apple'
+      },
+      golden_apple: {
+        name: '황금 사과',
+        tier: 4,
+        nextMerge: 'golden_tree'
+      },
+      golden_tree: {
+        name: '황금나무',
+        tier: 5,
+        nextMerge: 'rainbow_tree'
+      },
+      rose: {
+        name: '장미',
+        tier: 1,
+        baseHours: 48,
+        price: 5,
+        nextMerge: 'red_tulip'
+      },
+      red_tulip: {
+        name: '붉은색 튤립',
+        tier: 2,
+        nextMerge: 'azalea'
+      },
+      azalea: {
+        name: '진달래',
+        tier: 3,
+        nextMerge: 'flame_apple'
+      },
+      flame_apple: {
+        name: '불꽃 사과',
+        tier: 4,
+        nextMerge: 'flame_tree'
+      },
+      flame_tree: {
+        name: '불꽃나무',
+        tier: 5,
+        nextMerge: 'rainbow_tree'
+      },
+      rainbow_tree: {
+        name: '무지개나무',
+        tier: 6,
+        nextMerge: null
+      }
+    };
+
+    // 보태니컬 라인아트 스타일 UI 아이콘 SVG 생성 함수
+    function getUIIconSVG(type) {
+      switch (type) {
+        case 'coin':
+          return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+              <circle cx="32" cy="32" r="26" fill="#FDD835" stroke="#262421" stroke-width="3.2"/>
+              <circle cx="32" cy="32" r="20" fill="#FFEE58" stroke="#F57F17" stroke-width="2"/>
+              <path d="M32 43 L32 23" stroke="#558B2F" stroke-width="3.2" stroke-linecap="round"/>
+              <path d="M32 33 C23 33, 20 25, 25 21 C29 18, 32 26, 32 33 Z" fill="#8BC34A" stroke="#262421" stroke-width="2.2"/>
+              <path d="M32 30 C41 30, 44 22, 39 18 C35 15, 32 23, 32 30 Z" fill="#9CCC65" stroke="#262421" stroke-width="2.2"/>
+            </svg>`;
+
+        case 'sprout_dot':
+          return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+              <ellipse cx="32" cy="52" rx="18" ry="6" fill="#8D6E63" stroke="#262421" stroke-width="3"/>
+              <path d="M32 50 L32 24" stroke="#558B2F" stroke-width="4" stroke-linecap="round"/>
+              <path d="M32 35 C18 35, 13 23, 21 16 C28 12, 32 23, 32 35 Z" fill="#8BC34A" stroke="#262421" stroke-width="2.8"/>
+              <path d="M32 31 C46 31, 51 19, 43 12 C36 8, 32 19, 32 31 Z" fill="#9CCC65" stroke="#262421" stroke-width="2.8"/>
+            </svg>`;
+
+        case 'rules':
+          return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+              <rect x="12" y="12" width="40" height="46" rx="5" fill="#8D6E63" stroke="#262421" stroke-width="3"/>
+              <rect x="17" y="17" width="30" height="36" fill="#F6F4EC" stroke="#262421" stroke-width="2.4"/>
+              <rect x="23" y="7" width="18" height="9" rx="3" fill="#F2E376" stroke="#262421" stroke-width="2.8"/>
+              <path d="M23 27 H41 M23 35 H41 M23 43 H35" stroke="#262421" stroke-width="2.8" stroke-linecap="round"/>
+            </svg>`;
+
+        case 'earth':
+          return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+              <circle cx="32" cy="36" r="22" fill="#81D4FA" stroke="#262421" stroke-width="3"/>
+              <path d="M16 28 C22 26, 28 30, 26 38 C24 44, 18 46, 13 42" fill="#8BC34A" stroke="#262421" stroke-width="2.5"/>
+              <path d="M36 22 C42 24, 49 28, 51 36 C46 44, 38 44, 36 36 C34 30, 34 25, 36 22 Z" fill="#689F38" stroke="#262421" stroke-width="2.5"/>
+              <path d="M32 14 L32 6" stroke="#558B2F" stroke-width="3.2" stroke-linecap="round"/>
+              <path d="M32 11 C25 11, 22 5, 27 3 C30 2, 32 7, 32 11 Z" fill="#8BC34A" stroke="#262421" stroke-width="2.2"/>
+              <path d="M32 11 C39 11, 42 5, 37 3 C34 2, 32 7, 32 11 Z" fill="#9CCC65" stroke="#262421" stroke-width="2.2"/>
+            </svg>`;
+
+        case 'camera':
+          return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+              <rect x="16" y="12" width="12" height="7" rx="2" fill="#D96846" stroke="#262421" stroke-width="2.8"/>
+              <rect x="8" y="18" width="48" height="36" rx="6" fill="#F6F4EC" stroke="#262421" stroke-width="3"/>
+              <path d="M8 28 H56" stroke="#262421" stroke-width="2.5"/>
+              <circle cx="34" cy="37" r="11" fill="#F2E376" stroke="#262421" stroke-width="3"/>
+              <circle cx="34" cy="37" r="5.5" fill="#6B7C45" stroke="#262421" stroke-width="2.4"/>
+              <circle cx="48" cy="23" r="2.5" fill="#D96846"/>
+            </svg>`;
+
+        case 'garden_home':
+          return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+              <path d="M10 30 L32 11 L54 30" fill="#D96846" stroke="#262421" stroke-width="3" stroke-linejoin="round"/>
+              <rect x="15" y="30" width="34" height="24" fill="#F6F4EC" stroke="#262421" stroke-width="3"/>
+              <path d="M27 54 V39 C27 36, 37 36, 37 39 V54" fill="#8BC34A" stroke="#262421" stroke-width="2.6"/>
+            </svg>`;
+      }
+      return '';
+    }
+
+    // 전 단계 보태니컬 작물 SVG 일러스트 (새싹 + 11종 작물)
+    function getCropSVG(type, isGrowing = false) {
+      if (isGrowing) {
+        return `
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+            <ellipse cx="32" cy="52" rx="18" ry="6" fill="#8D6E63" stroke="#262421" stroke-width="2.2"/>
+            <path d="M32 50 L32 26" stroke="#558B2F" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M32 34 C20 34, 15 24, 22 18 C28 14, 32 24, 32 34 Z" fill="#8BC34A" stroke="#262421" stroke-width="2.2"/>
+            <path d="M32 30 C44 30, 49 20, 42 14 C36 10, 32 20, 32 30 Z" fill="#9CCC65" stroke="#262421" stroke-width="2.2"/>
+          </svg>`;
+      }
+
+      switch (type) {
+        case 'dandelion':
+          return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+              <path d="M32 56 L16 44 L24 41 L18 35 L27 38 L32 50 Z" fill="#689F38" stroke="#262421" stroke-width="2"/>
+              <path d="M32 56 L48 44 L40 41 L46 35 L37 38 L32 50 Z" fill="#7CB342" stroke="#262421" stroke-width="2"/>
+              <path d="M32 55 L32 28" stroke="#558B2F" stroke-width="3.5"/>
+              <circle cx="32" cy="22" r="14" fill="#FDD835" stroke="#262421" stroke-width="2.2"/>
+              <circle cx="32" cy="22" r="9.5" fill="#FFEE58" stroke="#F57F17" stroke-width="1.8" stroke-dasharray="3 2"/>
+              <circle cx="32" cy="22" r="4.5" fill="#FBC02D" stroke="#262421" stroke-width="1.8"/>
+            </svg>`;
+
+        case 'yellow_tulip':
+          return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+              <path d="M32 56 L32 30" stroke="#558B2F" stroke-width="3.5"/>
+              <path d="M32 54 C18 46, 16 30, 22 26 C24 36, 26 44, 32 54 Z" fill="#7CB342" stroke="#262421" stroke-width="2"/>
+              <path d="M32 54 C46 46, 48 30, 42 26 C40 36, 38 44, 32 54 Z" fill="#558B2F" stroke="#262421" stroke-width="2"/>
+              <path d="M23 22 C23 9, 32 5, 32 5 C32 5, 41 9, 41 22 C41 31, 23 31, 23 22 Z" fill="#FFEE58" stroke="#262421" stroke-width="2.2"/>
+              <path d="M32 31 C19 31, 17 17, 21 9 C27 14, 30 20, 32 31 Z" fill="#FDD835" stroke="#262421" stroke-width="2.2"/>
+              <path d="M32 31 C45 31, 47 17, 43 9 C37 14, 34 20, 32 31 Z" fill="#FBC02D" stroke="#262421" stroke-width="2.2"/>
+            </svg>`;
+
+        case 'sunflower':
+          return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+              <path d="M32 56 L32 32" stroke="#558B2F" stroke-width="4"/>
+              <path d="M32 48 C19 45, 17 36, 25 35 C29 36, 32 42, 32 48 Z" fill="#7CB342" stroke="#262421" stroke-width="2"/>
+              <path d="M32 48 C45 45, 47 36, 39 35 C35 36, 32 42, 32 48 Z" fill="#558B2F" stroke="#262421" stroke-width="2"/>
+              <g stroke="#262421" stroke-width="1.8" fill="#FDD835">
+                <ellipse cx="32" cy="9" rx="4.5" ry="8"/>
+                <ellipse cx="32" cy="35" rx="4.5" ry="8"/>
+                <ellipse cx="19" cy="22" rx="8" ry="4.5"/>
+                <ellipse cx="45" cy="22" rx="8" ry="4.5"/>
+                <ellipse cx="32" cy="9" rx="4.5" ry="8" transform="rotate(45 32 22)" fill="#FBC02D"/>
+                <ellipse cx="32" cy="35" rx="4.5" ry="8" transform="rotate(45 32 22)" fill="#FBC02D"/>
+                <ellipse cx="19" cy="22" rx="8" ry="4.5" transform="rotate(45 32 22)" fill="#FBC02D"/>
+                <ellipse cx="45" cy="22" rx="8" ry="4.5" transform="rotate(45 32 22)" fill="#FBC02D"/>
+              </g>
+              <circle cx="32" cy="22" r="8.5" fill="#5D4037" stroke="#262421" stroke-width="2.2"/>
+              <circle cx="29" cy="20" r="1.2" fill="#FFE082"/>
+              <circle cx="35" cy="20" r="1.2" fill="#FFE082"/>
+              <circle cx="32" cy="24" r="1.2" fill="#FFE082"/>
+            </svg>`;
+
+        case 'golden_apple':
+          return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+              <path d="M32 18 C32 11, 36 8, 39 7" stroke="#5D4037" stroke-width="3.2" stroke-linecap="round"/>
+              <path d="M33 14 C42 10, 48 15, 42 20 C38 22, 34 18, 33 14 Z" fill="#8BC34A" stroke="#262421" stroke-width="2"/>
+              <path d="M32 20 C22 16, 12 24, 14 38 C16 50, 26 55, 32 52 C38 55, 48 50, 50 38 C52 24, 42 16, 32 20 Z" fill="#FFD54F" stroke="#262421" stroke-width="2.4"/>
+              <path d="M21 28 C19 33, 20 40, 23 44" stroke="#FFF8E1" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>`;
+
+        case 'golden_tree':
+          return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+              <path d="M26 56 L28 36 L36 36 L38 56 Z" fill="#795548" stroke="#262421" stroke-width="2.2"/>
+              <circle cx="22" cy="28" r="12" fill="#FBC02D" stroke="#262421" stroke-width="2.2"/>
+              <circle cx="42" cy="28" r="12" fill="#FBC02D" stroke="#262421" stroke-width="2.2"/>
+              <circle cx="32" cy="18" r="14" fill="#FFEE58" stroke="#262421" stroke-width="2.2"/>
+              <circle cx="25" cy="22" r="3" fill="#FFFDE7" stroke="#262421" stroke-width="1.5"/>
+              <circle cx="38" cy="20" r="3" fill="#FFFDE7" stroke="#262421" stroke-width="1.5"/>
+              <circle cx="32" cy="30" r="3" fill="#FFFDE7" stroke="#262421" stroke-width="1.5"/>
+            </svg>`;
+
+        case 'rose':
+          return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+              <path d="M32 56 L32 30" stroke="#33691E" stroke-width="3.5"/>
+              <path d="M32 43 L27 40 M32 49 L37 46" stroke="#33691E" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M32 46 C20 44, 18 35, 25 34 C29 35, 32 40, 32 46 Z" fill="#558B2F" stroke="#262421" stroke-width="2"/>
+              <circle cx="32" cy="21" r="13" fill="#C62828" stroke="#262421" stroke-width="2.2"/>
+              <path d="M23 19 C26 12, 38 12, 41 19 C43 26, 32 31, 25 26 C21 22, 26 16, 32 17 C36 18, 36 23, 32 23" fill="#E53935" stroke="#262421" stroke-width="2" stroke-linecap="round"/>
+            </svg>`;
+
+        case 'red_tulip':
+          return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+              <path d="M32 56 L32 30" stroke="#558B2F" stroke-width="3.5"/>
+              <path d="M32 54 C18 46, 16 30, 22 26 C24 36, 26 44, 32 54 Z" fill="#7CB342" stroke="#262421" stroke-width="2"/>
+              <path d="M32 54 C46 46, 48 30, 42 26 C40 36, 38 44, 32 54 Z" fill="#558B2F" stroke="#262421" stroke-width="2"/>
+              <path d="M23 22 C23 9, 32 5, 32 5 C32 5, 41 9, 41 22 C41 31, 23 31, 23 22 Z" fill="#EF5350" stroke="#262421" stroke-width="2.2"/>
+              <path d="M32 31 C19 31, 17 17, 21 9 C27 14, 30 20, 32 31 Z" fill="#E53935" stroke="#262421" stroke-width="2.2"/>
+              <path d="M32 31 C45 31, 47 17, 43 9 C37 14, 34 20, 32 31 Z" fill="#D32F2F" stroke="#262421" stroke-width="2.2"/>
+            </svg>`;
+
+        case 'azalea':
+          return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+              <path d="M32 56 L32 34" stroke="#5D4037" stroke-width="3.2"/>
+              <g stroke="#262421" stroke-width="2" fill="#EC407A">
+                <ellipse cx="32" cy="12" rx="7" ry="10"/>
+                <ellipse cx="32" cy="12" rx="7" ry="10" transform="rotate(72 32 24)" fill="#F06292"/>
+                <ellipse cx="32" cy="12" rx="7" ry="10" transform="rotate(144 32 24)"/>
+                <ellipse cx="32" cy="12" rx="7" ry="10" transform="rotate(216 32 24)"/>
+                <ellipse cx="32" cy="12" rx="7" ry="10" transform="rotate(288 32 24)" fill="#F06292"/>
+              </g>
+              <circle cx="32" cy="24" r="4.5" fill="#AD1457" stroke="#262421" stroke-width="1.8"/>
+              <path d="M32 24 L27 16 M32 24 L37 16 M32 24 L32 14" stroke="#FFEE58" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>`;
+
+        case 'flame_apple':
+          return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+              <path d="M32 6 C26 14, 38 14, 32 22" stroke="#FF6F00" stroke-width="3" stroke-linecap="round"/>
+              <path d="M33 14 C42 9, 49 14, 42 20 C38 22, 34 18, 33 14 Z" fill="#FF8F00" stroke="#262421" stroke-width="2"/>
+              <path d="M32 20 C22 16, 12 24, 14 38 C16 50, 26 55, 32 52 C38 55, 48 50, 50 38 C52 24, 42 16, 32 20 Z" fill="#E53935" stroke="#262421" stroke-width="2.4"/>
+              <path d="M22 36 C25 28, 32 34, 32 24 C36 32, 40 30, 42 38 C42 46, 22 46, 22 36 Z" fill="#FFA000" stroke="#262421" stroke-width="1.8"/>
+            </svg>`;
+
+        case 'flame_tree':
+          return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+              <path d="M26 56 L28 36 L36 36 L38 56 Z" fill="#4E342E" stroke="#262421" stroke-width="2.2"/>
+              <circle cx="22" cy="28" r="12" fill="#D84315" stroke="#262421" stroke-width="2.2"/>
+              <circle cx="42" cy="28" r="12" fill="#E64A19" stroke="#262421" stroke-width="2.2"/>
+              <circle cx="32" cy="18" r="14" fill="#FF7043" stroke="#262421" stroke-width="2.2"/>
+              <circle cx="25" cy="22" r="3" fill="#FFEE58" stroke="#262421" stroke-width="1.5"/>
+              <circle cx="38" cy="20" r="3" fill="#FFEE58" stroke="#262421" stroke-width="1.5"/>
+              <circle cx="32" cy="30" r="3" fill="#FFEE58" stroke="#262421" stroke-width="1.5"/>
+            </svg>`;
+
+        case 'rainbow_tree':
+          return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+              <ellipse cx="32" cy="58" rx="16" ry="4" fill="#8D6E63" stroke="#262421" stroke-width="2"/>
+              <path d="M25 58 L28 33 L36 33 L39 58 Z" fill="#5D4037" stroke="#262421" stroke-width="2.2"/>
+              <circle cx="17" cy="30" r="10.5" fill="#EF5350" stroke="#262421" stroke-width="2"/>
+              <circle cx="47" cy="30" r="10.5" fill="#AB47BC" stroke="#262421" stroke-width="2"/>
+              <circle cx="22" cy="19" r="11.5" fill="#FFA726" stroke="#262421" stroke-width="2"/>
+              <circle cx="42" cy="19" r="11.5" fill="#42A5F5" stroke="#262421" stroke-width="2"/>
+              <circle cx="32" cy="26" r="11.5" fill="#66BB6A" stroke="#262421" stroke-width="2"/>
+              <circle cx="32" cy="13" r="11.5" fill="#FFEE58" stroke="#262421" stroke-width="2"/>
+              <circle cx="21" cy="20" r="2.5" fill="#FFFFFF" stroke="#262421" stroke-width="1.2"/>
+              <circle cx="43" cy="20" r="2.5" fill="#FFFFFF" stroke="#262421" stroke-width="1.2"/>
+              <circle cx="32" cy="12" r="3" fill="#FFFFFF" stroke="#262421" stroke-width="1.4"/>
+              <circle cx="32" cy="26" r="2.5" fill="#FFFFFF" stroke="#262421" stroke-width="1.2"/>
+            </svg>`;
+      }
+    }
+
+    // 정적 UI 아이콘 초기화
+    function initStaticIcons() {
+      document.getElementById('header-coin-icon').innerHTML = getUIIconSVG('coin');
+      document.getElementById('btn-rule-icon').innerHTML = getUIIconSVG('rules');
+      document.getElementById('modal-rule-icon').innerHTML = getUIIconSVG('rules');
+      document.getElementById('victory-earth-icon').innerHTML = getUIIconSVG('earth');
+      document.getElementById('btn-camera-icon').innerHTML = getUIIconSVG('camera');
+      document.getElementById('btn-home-icon').innerHTML = getUIIconSVG('garden_home');
+
+      document.getElementById('rule-crops-cell').innerHTML = `
+        • <span class="inline-svg-badge">${getCropSVG('rose', false)}</span><strong>장미 씨앗 (5 C)</strong>: 다 자라는 데 <strong>2일(48시간)</strong> 소요<br>
+        • <span class="inline-svg-badge">${getCropSVG('dandelion', false)}</span><strong>민들레 씨앗 (10 C)</strong>: 다 자라는 데 <strong>1일(24시간)</strong> 소요
+      `;
+    }
+
+    const DEFAULT_HABITS = [
+      { id: 'default_1', text: '양치컵 사용하기', isCustom: false },
+      { id: 'default_2', text: '짧은 거리는 도보나 자전거로 이동하기', isCustom: false },
+      { id: 'default_3', text: '일회용 컵 대신 텀블러 사용하기', isCustom: false },
+      { id: 'default_4', text: '사용하지 않는 플러그 뽑기', isCustom: false }
+    ];
+
+    let currentUser = null;
+    let currentYear = new Date().getFullYear();
+    let currentMonth = new Date().getMonth();
+    let selectedDateStr = formatDate(new Date());
+    let selectedTool = 'merge'; // 'rose', 'dandelion', 'merge'
+    let mergeSourceIndex = null;
+
+    function getUsersData() {
+      const data = localStorage.getItem('fresh_eco_grove_official_v1');
+      return data ? JSON.parse(data) : {};
+    }
+
+    function saveUsersData(users) {
+      localStorage.setItem('fresh_eco_grove_official_v1', JSON.stringify(users));
+    }
+
+    function formatDate(date) {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    // 가입일 기준 실제 경과 일수(DAY 1 ~ 30) 계산
+    function getChallengeDayNumber(userData) {
+      if (!userData.createdAtDate) return 1;
+      const [sy, sm, sd] = userData.createdAtDate.split('-').map(Number);
+      const start = new Date(sy, sm - 1, sd);
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const diffDays = Math.floor((today - start) / (1000 * 60 * 60 * 24)) + 1;
+      return Math.min(30, Math.max(1, diffDays));
+    }
+
+    function toggleRuleModal(show) {
+      const modal = document.getElementById('rule-modal');
+      if (show) modal.classList.add('open');
+      else modal.classList.remove('open');
+    }
+
+    function showAuthScreen(type) {
+      document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+      if (type === 'signup') {
+        document.getElementById('signup-screen').classList.add('active');
+      } else {
+        document.getElementById('login-screen').classList.add('active');
+      }
+    }
+
+    function signup() {
+      const username = document.getElementById('signup-username').value.trim();
+      const password = document.getElementById('signup-password').value.trim();
+      const confirmPw = document.getElementById('signup-password-confirm').value.trim();
+
+      if (!username || !password || !confirmPw) {
+        alert('모든 칸을 입력해주세요.');
+        return;
+      }
+      if (password !== confirmPw) {
+        alert('비밀번호가 일치하지 않습니다.');
+        return;
+      }
+
+      const users = getUsersData();
+      if (users[username]) {
+        alert('이미 존재하는 아이디입니다.');
+        return;
+      }
+
+      users[username] = {
+        password: password,
+        createdAtDate: formatDate(new Date()),
+        challengeCleared: false,
+        clearedDate: null,
+        coins: 10,
+        inventory: {
+          rose: 0,
+          dandelion: 0
+        },
+        customHabits: [],
+        records: {},
+        penalizedDates: [],
+        garden: Array(16).fill(null) // 4x4 = 16칸 정원
+      };
+
+      saveUsersData(users);
+      alert('회원가입 완료! 30일 무지개나무 챌린지가 시작됩니다.');
+      document.getElementById('signup-username').value = '';
+      document.getElementById('signup-password').value = '';
+      document.getElementById('signup-password-confirm').value = '';
+      showAuthScreen('login');
+    }
+
+    function login() {
+      const username = document.getElementById('login-username').value.trim();
+      const password = document.getElementById('login-password').value.trim();
+
+      const users = getUsersData();
+      if (!users[username] || users[username].password !== password) {
+        alert('아이디 또는 비밀번호를 확인해주세요.');
+        return;
+      }
+
+      currentUser = username;
+      if (!users[currentUser].createdAtDate) {
+        users[currentUser].createdAtDate = formatDate(new Date());
+      }
+      if (!users[currentUser].garden || users[currentUser].garden.length !== 16) {
+        users[currentUser].garden = Array(16).fill(null);
+      }
+      saveUsersData(users);
+
+      document.getElementById('header-user-info').style.display = 'flex';
+      document.getElementById('bottom-nav').style.display = 'grid';
+
+      checkAndApplyMissedDayPenalties();
+      renderAll();
+
+      if (users[currentUser].challengeCleared) {
+        showVictoryScreen();
+      } else {
+        openTab('home');
+      }
+    }
+
+    function logout() {
+      currentUser = null;
+      mergeSourceIndex = null;
+      toggleRuleModal(false);
+      document.getElementById('login-username').value = '';
+      document.getElementById('login-password').value = '';
+      document.getElementById('header-user-info').style.display = 'none';
+      document.getElementById('bottom-nav').style.display = 'none';
+      showAuthScreen('login');
+    }
+
+    function openTab(tabName) {
+      mergeSourceIndex = null;
+      document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('#bottom-nav button').forEach(el => el.classList.remove('active'));
+
+      if (tabName === 'garden') {
+        document.getElementById('garden-screen').classList.add('active');
+        document.getElementById('nav-garden').classList.add('active');
+        renderInventory();
+        renderGarden();
+        renderShop();
+      } else if (tabName === 'victory') {
+        showVictoryScreen();
+      } else {
+        document.getElementById('home-screen').classList.add('active');
+        document.getElementById('nav-home').classList.add('active');
+        renderCalendar();
+        renderChecklist();
+      }
+    }
+
+    function triggerRainbowVictory() {
+      const users = getUsersData();
+      const userData = users[currentUser];
+      userData.challengeCleared = true;
+      userData.clearedDate = formatDate(new Date());
+      saveUsersData(users);
+
+      const overlay = document.getElementById('popout-overlay');
+      const holder = document.getElementById('popout-tree-holder');
+      holder.innerHTML = getCropSVG('rainbow_tree', false);
+      overlay.classList.add('active');
+
+      setTimeout(() => {
+        overlay.classList.remove('active');
+        showVictoryScreen();
+      }, 1550);
+    }
+
+    function showVictoryScreen() {
+      const users = getUsersData();
+      const userData = users[currentUser];
+
+      document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('#bottom-nav button').forEach(el => el.classList.remove('active'));
+
+      document.getElementById('victory-user-title').textContent = `${currentUser}님 챌린지 성공!`;
+      document.getElementById('victory-date-sub').textContent = `달성일: ${userData.clearedDate || formatDate(new Date())} · 무지개 나무 획득 완료`;
+      document.getElementById('victory-tree-holder').innerHTML = getCropSVG('rainbow_tree', false);
+
+      document.getElementById('victory-screen').classList.add('active');
+    }
+
+    function downloadVictoryImage() {
+      const users = getUsersData();
+      const userData = users[currentUser];
+      const clearedDate = userData.clearedDate || formatDate(new Date());
+
+      const canvas = document.createElement('canvas');
+      canvas.width = 800;
+      canvas.height = 1060;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = '#eae6da';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#f6f4ec';
+      ctx.fillRect(40, 40, 720, 980);
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = '#262421';
+      ctx.strokeRect(40, 40, 720, 980);
+
+      ctx.fillStyle = '#f2e376';
+      ctx.fillRect(40, 40, 720, 90);
+      ctx.beginPath();
+      ctx.moveTo(40, 130);
+      ctx.lineTo(760, 130);
+      ctx.stroke();
+
+      ctx.fillStyle = '#262421';
+      ctx.font = 'bold 28px Pretendard, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('FRESH ECO GROVE · 30-DAY CHALLENGE CLEAR', 400, 95);
+
+      ctx.fillStyle = '#262421';
+      ctx.font = '800 52px Pretendard, sans-serif';
+      ctx.fillText(`${currentUser}님 챌린지 성공!`, 400, 220);
+
+      ctx.fillStyle = '#6e6a63';
+      ctx.font = '600 24px Pretendard, sans-serif';
+      ctx.fillText(`달성일: ${clearedDate}  |  최종 목표 무지개 나무 획득`, 400, 265);
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(400, 490, 175, 0, Math.PI * 2);
+      ctx.fillStyle = '#f2e376';
+      ctx.fill();
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = '#262421';
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(85, 720, 630, 245);
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = '#262421';
+      ctx.strokeRect(85, 720, 630, 245);
+
+      ctx.fillStyle = '#6b7c45';
+      ctx.font = 'bold 27px Pretendard, sans-serif';
+      ctx.fillText('지구를 지키는 작은 실천의 힘', 400, 772);
+
+      ctx.fillStyle = '#262421';
+      ctx.font = '500 23px Pretendard, sans-serif';
+      const lines = [
+        '매일의 양치컵 사용과 작은 보전 행동이 모여',
+        '기적의 무지개 나무를 피워냈습니다.',
+        '화면 속 정원을 넘어, 우리의 일상 속 실천이 지구의 내일을 바꿉니다.',
+        '오늘도 지구를 위한 초록빛 발걸음을 함께 이어가 주세요!'
+      ];
+      lines.forEach((line, i) => {
+        ctx.fillText(line, 400, 822 + i * 34);
+      });
+
+      const svgString = getCropSVG('rainbow_tree', false);
+      const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svgBlob);
+      const img = new Image();
+
+      img.onload = function () {
+        ctx.save();
+        ctx.shadowColor = 'rgba(38, 36, 33, 0.35)';
+        ctx.shadowBlur = 24;
+        ctx.shadowOffsetY = 14;
+        ctx.drawImage(img, 180, 250, 440, 440);
+        ctx.restore();
+
+        URL.revokeObjectURL(url);
+
+        const link = document.createElement('a');
+        link.download = `eco_challenge_clear_${currentUser}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      };
+
+      img.src = url;
+    }
+
+    // 가입일 이후 어제까지의 모든 날짜를 점검해 미완료 날짜 1일당 자라는 작물 1개에 +12시간 부여
+    function checkAndApplyMissedDayPenalties() {
+      const users = getUsersData();
+      const userData = users[currentUser];
+      const allHabits = [...DEFAULT_HABITS, ...userData.customHabits];
+      if (allHabits.length === 0 || !userData.createdAtDate) return;
+
+      const [sy, sm, sd] = userData.createdAtDate.split('-').map(Number);
+      const cursor = new Date(sy, sm - 1, sd);
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+      while (cursor < today) {
+        const dateStr = formatDate(cursor);
+        if (!userData.penalizedDates.includes(dateStr)) {
+          const rec = userData.records[dateStr];
+          const isComplete = rec && allHabits.every(h => rec.completedIds.includes(h.id));
+          if (!isComplete) {
+            const nowMs = Date.now();
+            const growingPlots = userData.garden.filter(plot => {
+              if (!plot) return false;
+              const elapsedHours = (nowMs - plot.plantedAt) / (1000 * 60 * 60);
+              return elapsedHours < plot.requiredHours;
+            });
+
+            if (growingPlots.length > 0) {
+              growingPlots[0].requiredHours += 12;
+              growingPlots[0].penaltyCount = (growingPlots[0].penaltyCount || 0) + 1;
+              userData.penalizedDates.push(dateStr);
+            }
+          }
+        }
+        cursor.setDate(cursor.getDate() + 1);
+      }
+
+      saveUsersData(users);
+    }
+
+    function renderAll() {
+      updateHeaderStatus();
+      renderCalendar();
+      renderChecklist();
+      renderInventory();
+      renderGarden();
+      renderShop();
+    }
+
+    function updateHeaderStatus() {
+      const users = getUsersData();
+      const userData = users[currentUser];
+      document.getElementById('coin-count').textContent = userData.coins;
+      const dayNum = getChallengeDayNumber(userData);
+      const badgeEl = document.getElementById('challenge-day-badge');
+      if (userData.challengeCleared) {
+        badgeEl.innerHTML = `<span class="ui-icon" style="width:14px;height:14px;">${getCropSVG('rainbow_tree', false)}</span><span>CLEAR</span>`;
+      } else {
+        badgeEl.textContent = `DAY ${dayNum}/30`;
+      }
+    }
+
+    function changeMonth(offset) {
+      currentMonth += offset;
+      if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+      } else if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      }
+      renderCalendar();
+    }
+
+    function renderCalendar() {
+      const users = getUsersData();
+      const userData = users[currentUser];
+      const allHabitsCount = DEFAULT_HABITS.length + userData.customHabits.length;
+
+      document.getElementById('calendar-month-title').textContent = `${currentYear}. ${String(currentMonth + 1).padStart(2, '0')}`;
+      const calendarBody = document.getElementById('calendar-body');
+      calendarBody.innerHTML = '';
+
+      const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+      const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+      const todayStr = formatDate(new Date());
+
+      for (let i = 0; i < firstDay; i++) {
+        calendarBody.appendChild(document.createElement('div'));
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'calendar-day';
+
+        if (dateStr === selectedDateStr) dayDiv.classList.add('selected');
+        if (dateStr === todayStr) dayDiv.classList.add('today');
+
+        const dayNum = document.createElement('span');
+        dayNum.textContent = day;
+        dayDiv.appendChild(dayNum);
+
+        const record = userData.records[dateStr];
+        if (record && record.completedIds.length > 0) {
+          const dot = document.createElement('span');
+          dot.className = 'status-dot';
+          const isAllDone = record.completedIds.length >= allHabitsCount && allHabitsCount > 0;
+          dot.innerHTML = isAllDone ? getUIIconSVG('coin') : getUIIconSVG('sprout_dot');
+          dayDiv.appendChild(dot);
+        }
+
+        dayDiv.onclick = () => {
+          selectedDateStr = dateStr;
+          renderCalendar();
+          renderChecklist();
+        };
+
+        calendarBody.appendChild(dayDiv);
+      }
+    }
+
+    function renderChecklist() {
+      const users = getUsersData();
+      const userData = users[currentUser];
+
+      document.getElementById('selected-date-display').textContent = selectedDateStr;
+
+      if (!userData.records[selectedDateStr]) {
+        userData.records[selectedDateStr] = { completedIds: [], rewarded: false };
+        saveUsersData(users);
+      }
+
+      const dayRecord = userData.records[selectedDateStr];
+      const allHabits = [...DEFAULT_HABITS, ...userData.customHabits];
+      const container = document.getElementById('checklist-container');
+      container.innerHTML = '';
+
+      allHabits.forEach(habit => {
+        const isChecked = dayRecord.completedIds.includes(habit.id);
+        const li = document.createElement('li');
+        li.className = `checklist-li ${isChecked ? 'completed' : ''}`;
+
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = isChecked;
+        checkbox.onchange = () => toggleHabit(habit.id);
+
+        const span = document.createElement('span');
+        span.textContent = habit.text;
+
+        label.appendChild(checkbox);
+        label.appendChild(span);
+        li.appendChild(label);
+
+        if (habit.isCustom) {
+          const delBtn = document.createElement('button');
+          delBtn.className = 'del-btn';
+          delBtn.textContent = '삭제';
+          delBtn.onclick = () => deleteCustomHabit(habit.id);
+          li.appendChild(delBtn);
+        }
+
+        container.appendChild(li);
+      });
+
+      const progressPercent = allHabits.length > 0
+        ? Math.round((dayRecord.completedIds.length / allHabits.length) * 100)
+        : 0;
+      document.getElementById('checklist-progress').style.width = `${progressPercent}%`;
+    }
+
+    function toggleHabit(habitId) {
+      const users = getUsersData();
+      const userData = users[currentUser];
+      const dayRecord = userData.records[selectedDateStr];
+
+      const idx = dayRecord.completedIds.indexOf(habitId);
+      if (idx > -1) {
+        dayRecord.completedIds.splice(idx, 1);
+      } else {
+        dayRecord.completedIds.push(habitId);
+      }
+
+      const allHabits = [...DEFAULT_HABITS, ...userData.customHabits];
+      const isAllCompleted = allHabits.every(h => dayRecord.completedIds.includes(h.id));
+
+      if (isAllCompleted && !dayRecord.rewarded && allHabits.length > 0) {
+        dayRecord.rewarded = true;
+        userData.coins += 10;
+        alert(`[${selectedDateStr}] 체크리스트 완수! +10 코인을 획득했습니다!`);
+      }
+
+      saveUsersData(users);
+      renderAll();
+    }
+
+    function addCustomHabit() {
+      const input = document.getElementById('new-habit-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const users = getUsersData();
+      users[currentUser].customHabits.push({
+        id: 'custom_' + Date.now(),
+        text: text,
+        isCustom: true
+      });
+
+      saveUsersData(users);
+      input.value = '';
+      renderAll();
+    }
+
+    function deleteCustomHabit(habitId) {
+      if (!confirm('이 체크리스트 항목을 삭제하시겠습니까?')) return;
+
+      const users = getUsersData();
+      const userData = users[currentUser];
+      userData.customHabits = userData.customHabits.filter(h => h.id !== habitId);
+
+      Object.keys(userData.records).forEach(dateKey => {
+        userData.records[dateKey].completedIds = userData.records[dateKey].completedIds.filter(id => id !== habitId);
+      });
+
+      saveUsersData(users);
+      renderAll();
+    }
+
+    function renderShop() {
+      const shopGrid = document.getElementById('shop-grid');
+      const items = [
+        { key: 'rose', name: '장미 씨앗', price: 5, timeText: '2일(48h)' },
+        { key: 'dandelion', name: '민들레 씨앗', price: 10, timeText: '1일(24h)' }
+      ];
+
+      shopGrid.innerHTML = items.map(item => `
+        <div class="shop-card">
+          <div class="shop-left">
+            <div class="shop-thumb">${getCropSVG(item.key, false)}</div>
+            <div>
+              <div class="shop-name">${item.name}</div>
+              <div class="shop-price">${item.price} C · ${item.timeText}</div>
+            </div>
+          </div>
+          <button class="shop-buy-btn" onclick="buySeed('${item.key}', ${item.price})">BUY</button>
+        </div>
+      `).join('');
+    }
+
+    function buySeed(seedKey, price) {
+      const users = getUsersData();
+      const userData = users[currentUser];
+
+      if (userData.coins < price) {
+        alert(`코인이 부족합니다! (보유: ${userData.coins}C / 필요: ${price}C)`);
+        return;
+      }
+
+      userData.coins -= price;
+      userData.inventory[seedKey] = (userData.inventory[seedKey] || 0) + 1;
+      selectedTool = seedKey;
+      mergeSourceIndex = null;
+      updateStatusTag(`${CROPS_INFO[seedKey].name} 심기 모드`);
+
+      saveUsersData(users);
+      renderAll();
+    }
+
+    function renderInventory() {
+      const users = getUsersData();
+      const inv = users[currentUser].inventory;
+      const bar = document.getElementById('inventory-bar');
+      bar.innerHTML = '';
+
+      const tools = [
+        { key: 'rose', label: `장미 심기(${inv.rose || 0})`, svg: getCropSVG('rose', false) },
+        { key: 'dandelion', label: `민들레 심기(${inv.dandelion || 0})`, svg: getCropSVG('dandelion', false) },
+        { key: 'merge', label: `합성 모드`, svg: getCropSVG('rainbow_tree', false) }
+      ];
+
+      tools.forEach(t => {
+        const div = document.createElement('div');
+        div.className = `inv-item ${selectedTool === t.key ? 'active' : ''}`;
+        div.innerHTML = `
+          <div class="inv-svg">${t.svg}</div>
+          <span>${t.label}</span>
+        `;
+        div.onclick = () => {
+          selectedTool = t.key;
+          mergeSourceIndex = null;
+          if (t.key === 'merge') {
+            updateStatusTag('합성 모드 활성');
+          } else {
+            updateStatusTag(`${CROPS_INFO[t.key].name} 심기 모드`);
+          }
+          renderInventory();
+          renderGarden();
+        };
+        bar.appendChild(div);
+      });
+    }
+
+    function updateStatusTag(text) {
+      const tag = document.getElementById('selected-crop-status');
+      if (tag) tag.textContent = text;
+    }
+
+    function renderGarden() {
+      const users = getUsersData();
+      const userData = users[currentUser];
+      const grid = document.getElementById('garden-grid');
+      grid.innerHTML = '';
+      const now = Date.now();
+
+      userData.garden.forEach((plot, idx) => {
+        const cell = document.createElement('div');
+        cell.className = 'garden-plot';
+
+        if (mergeSourceIndex === idx) {
+          cell.classList.add('selected-merge');
+        }
+
+        if (plot) {
+          const elapsedHours = (now - plot.plantedAt) / (1000 * 60 * 60);
+          const remainingHours = Math.max(0, Math.ceil(plot.requiredHours - elapsedHours));
+          const isGrowing = remainingHours > 0;
+
+          if (plot.type === 'rainbow_tree') {
+            cell.classList.add('rainbow-cell');
+          }
+
+          let penaltyBadge = plot.penaltyCount > 0 ? `<span class="cell-penalty-badge">+${plot.penaltyCount * 12}h</span>` : '';
+          let timerBadge = isGrowing ? `<span class="cell-timer">${remainingHours}h 남음</span>` : '';
+
+          cell.innerHTML = `
+            ${penaltyBadge}
+            <div class="plot-illust">${getCropSVG(plot.type, isGrowing)}</div>
+            ${timerBadge}
+          `;
+        }
+
+        cell.onclick = () => interactPlot(idx);
+        grid.appendChild(cell);
+      });
+    }
+
+    function getMergeResult(typeA, typeB) {
+      if (
+        (typeA === 'golden_tree' && typeB === 'flame_tree') ||
+        (typeA === 'flame_tree' && typeB === 'golden_tree')
+      ) {
+        return 'rainbow_tree';
+      }
+
+      if (typeA === typeB) {
+        const info = CROPS_INFO[typeA];
+        if (info && info.tier < 5 && info.nextMerge) {
+          return info.nextMerge;
+        }
+      }
+
+      return null;
+    }
+
+    function interactPlot(index) {
+      const users = getUsersData();
+      const userData = users[currentUser];
+      const plot = userData.garden[index];
+      const now = Date.now();
+
+      if (!plot) {
+        if (selectedTool === 'merge') {
+          if (mergeSourceIndex !== null) {
+            userData.garden[index] = userData.garden[mergeSourceIndex];
+            userData.garden[mergeSourceIndex] = null;
+            mergeSourceIndex = null;
+            updateStatusTag('작물 이동 완료');
+            saveUsersData(users);
+            renderGarden();
+          } else {
+            updateStatusTag('합성할 작물을 선택하세요');
+          }
+          return;
+        }
+
+        if (selectedTool === 'rose' || selectedTool === 'dandelion') {
+          if ((userData.inventory[selectedTool] || 0) <= 0) {
+            alert(`보유한 [${CROPS_INFO[selectedTool].name} 씨앗]이 없습니다! 하단 상점에서 구매해주세요.`);
+            return;
+          }
+
+          userData.inventory[selectedTool] -= 1;
+          userData.garden[index] = {
+            type: selectedTool,
+            plantedAt: now,
+            requiredHours: CROPS_INFO[selectedTool].baseHours,
+            penaltyCount: 0
+          };
+
+          updateStatusTag(`${CROPS_INFO[selectedTool].name} 심기 완료`);
+          saveUsersData(users);
+          renderInventory();
+          renderGarden();
+          checkAndApplyMissedDayPenalties();
+        }
+        return;
+      }
+
+      if (plot.type === 'rainbow_tree') {
+        showVictoryScreen();
+        return;
+      }
+
+      const elapsedHours = (now - plot.plantedAt) / (1000 * 60 * 60);
+      const remainingHours = Math.max(0, Math.ceil(plot.requiredHours - elapsedHours));
+      const cropInfo = CROPS_INFO[plot.type];
+
+      if (selectedTool !== 'merge') {
+        mergeSourceIndex = null;
+        if (remainingHours > 0) {
+          updateStatusTag(`${cropInfo.name} (${remainingHours}h 남음)`);
+        } else {
+          updateStatusTag(`[합성 모드]를 눌러 합성하세요`);
+        }
+        renderGarden();
+        return;
+      }
+
+      if (remainingHours > 0) {
+        mergeSourceIndex = null;
+        updateStatusTag(`${cropInfo.name} (${remainingHours}h 남음)`);
+        renderGarden();
+        return;
+      }
+
+      if (mergeSourceIndex === null) {
+        mergeSourceIndex = index;
+        updateStatusTag(`선택됨: ${cropInfo.name}`);
+        renderGarden();
+        return;
+      }
+
+      if (mergeSourceIndex === index) {
+        mergeSourceIndex = null;
+        updateStatusTag('선택 해제됨');
+        renderGarden();
+        return;
+      }
+
+      const sourcePlot = userData.garden[mergeSourceIndex];
+      const mergedType = getMergeResult(sourcePlot.type, plot.type);
+
+      if (!mergedType) {
+        mergeSourceIndex = index;
+        updateStatusTag(`선택됨: ${cropInfo.name}`);
+        renderGarden();
+        return;
+      }
+
+      userData.garden[index] = {
+        type: mergedType,
+        plantedAt: now,
+        requiredHours: 0,
+        penaltyCount: 0
+      };
+      userData.garden[mergeSourceIndex] = null;
+      mergeSourceIndex = null;
+
+      const newCropName = CROPS_INFO[mergedType].name;
+      updateStatusTag(`${newCropName} 합성 성공!`);
+      saveUsersData(users);
+      renderGarden();
+      updateHeaderStatus();
+
+      if (mergedType === 'rainbow_tree') {
+        triggerRainbowVictory();
+      }
+    }
+
+    // 1분마다 실시간 성장 타이머 및 날짜 경과 상태 자동 갱신
+    setInterval(() => {
+      if (currentUser) {
+        checkAndApplyMissedDayPenalties();
+        updateHeaderStatus();
+        if (document.getElementById('garden-screen').classList.contains('active')) {
+          renderGarden();
+        }
+      }
+    }, 60000);
+
+    initStaticIcons();
+  </script>
+</body>
+</html>
